@@ -183,3 +183,28 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
+
+// Fullscreen button (универсально для iOS, Android, ПК)
+if (fsBtn) {
+  fsBtn.addEventListener('click', () => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+    if (isIOS && typeof video.webkitEnterFullscreen === 'function') {
+      // На iPhone/iPad открываем нативный fullscreen
+      video.webkitEnterFullscreen();
+      return;
+    }
+
+    if (!document.fullscreenElement) {
+      // На Android и ПК лучше вызывать fullscreen именно на <video>
+      if (video.requestFullscreen) video.requestFullscreen();
+      else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+      else if (video.msRequestFullscreen) video.msRequestFullscreen();
+    } else {
+      // Выход из fullscreen
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if (document.msExitFullscreen) document.msExitFullscreen();
+    }
+  });
+}
