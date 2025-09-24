@@ -1,0 +1,29 @@
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --panel: rgba(0, 0, 0, 0.05);
+  --muted: #333;
+
+  --accent1: #06b6d4;
+  --accent2: #3b82f6;
+  --accent3: #a78bfa;
+  --accent4: #fb7185;
+  --logo-font: 'Lobster', cursive;
+  --ui-font: Inter, system-ui, Segoe UI, Roboto, Arial;
+}
+
+/* Тёмная тема */
+.dark-theme {
+  --bg: #000000;
+  --text: #ffffff;
+  --panel: rgba(255, 255, 255, 0.05);
+  --muted: #ccc;
+}
+
+body {
+  margin: 0;
+  font-family: var(--ui-font);
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
+}

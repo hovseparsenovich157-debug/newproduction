@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mesropyans — Forever</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="dark">
+  <div class="page-container">
+    <header class="topbar" id="topbar">
+      <div class="brand">
+        <div class="logo-text"><strong>Mesropyans</strong> Production</div>
+      </div>
+      <div class="controls">
+        <button id="homeBtn" class="icon-btn" title="Home">🏠</button>
+        <button id="themeBtn" class="icon-btn" title="Theme">🌙</button>
+        <button id="langToggle" class="icon-btn" title="Language">🌐</button>
+      </div>
+    </header>
+
+    <section class="carousel-wrap" aria-label="Gallery">
+      <div class="carousel">
+        <button class="arrow left" id="arrowLeft" aria-label="Previous">‹</button>
+        <div class="slide active"><img src="post1.jpg" alt="Slide 1"></div>
+        <div class="slide"><img src="post2.jpg" alt="Slide 2"></div>
+        <div class="slide"><img src="post3.jpg" alt="Slide 3"></div>
+        <div class="slide"><img src="Whisk_353b4bfc37af7fd971246dd2b21f6a92eg.png" alt="Slide 4"></div>
+        <button class="arrow right" id="arrowRight" aria-label="Next">›</button>
+      </div>
+    </section>
+
+    <main class="container">
+      <section class="player-card small-player">
+        <div class="video-wrap">
+          <video id="playerVideo" preload="metadata" poster="post4.jpg" playsinline>
+            <source src="video1.mp4" type="video/mp4">
+          </video>
+          <button id="bigPlay" class="big-play" aria-label="Play">▶</button>
+        </div>
+        <div class="controls-row">
+          <button id="playBtn" class="ctrl" aria-label="Play">▶</button>
+          <div class="progress" id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <div id="progressBuffer" class="progress-buffer"></div>
+            <div id="progressFilled" class="progress-filled"></div>
+          </div>
+          <div class="time"><span id="curTime">0:00</span>/<span id="durTime">0:00</span></div>
+          <button id="muteBtn" class="ctrl" aria-label="Mute">🔊</button>
+          <input id="vol" class="vol" type="range" min="0" max="1" step="0.01" value="1" aria-label="Volume">
+          <button id="fsBtn" class="ctrl" aria-label="Fullscreen">⛶</button>
+        </div>
+      </section>
+
+      <h2 class="premiere-title">Премьера года</h2>
+      <section class="posters">
+        <div class="poster-grid">
+          <div class="poster-card"><img src="photo_2025-09-24_17-14-42.jpg" alt="Poster A"></div>
+          <div class="poster-card"><img src="photo_2025-09-24_17-14-41.jpg" alt="Poster B"></div>
+        </div>
+      </section>
+
+      <section class="meta">
+        <h2>Description</h2>
+        <p data-i18n-lang="en">
+          In 2008, during the war, a young man draws a girl — and she comes to life. She runs away from home and he chases her, finding her in a mysterious place. Later her ring is stolen and together they set out to find the thief. In the finale Armageddon begins: they help search for missing people and aid a higher power. The film ends with hope and light.
+        </p>
+        <p data-i18n-lang="ru" style="display:none">
+          В 2008 году, во время войны, молодой парень рисует девушку — и она оживает. Она убегает из дома; он преследует её и находит в странном месте. Позже у неё крадут кольцо, и они вместе отправляются на поиски преступника. В финале начинается Армагеддон: они помогают находить пропавших людей и поддерживают высшую силу. Фильм заканчивается с надеждой и светом.
+        </p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      © Mesropyans Production — Все права защищены. | All rights reserved.
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

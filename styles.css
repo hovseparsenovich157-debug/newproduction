@@ -1,0 +1,301 @@
+:root{
+  --turq1:#06b6d4;
+  --turq2:#3b82f6;
+}
+body{margin:0;font-family:Inter,Arial;background:#000;color:#fff}
+body[data-theme='light']{background:#fff;color:#000}
+.page-container{max-width:1000px;margin:0 auto;min-height:100vh;background:#111;border-left:6px solid #000;border-right:6px solid #000}
+body[data-theme='light'] .page-container{background:#fafafa;border-left:6px solid #fff;border-right:6px solid #fff}
+.topbar{position:sticky;top:0;z-index:120;display:flex;justify-content:space-between;align-items:center;padding:12px 18px}
+
+.controls{display:flex;gap:12px}
+.icon-btn{background:linear-gradient(90deg,var(--turq1),var(--turq2));border:0;color:#fff;padding:8px 12px;border-radius:12px;cursor:pointer}
+.carousel-wrap{display:flex;justify-content:center;padding:20px}
+.carousel{position:relative;width:80%;max-width:700px;min-height:200px;display:flex;align-items:center;justify-content:center}
+.slide{display:none;justify-content:center;align-items:center}
+.slide.active{display:flex}
+.slide img{max-width:100%;max-height:60vh;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,0.5)}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.2);border:none;border-radius:50%;width:40px;height:40px;font-size:24px;color:#fff;cursor:pointer}
+.arrow.left{left:10px}
+.arrow.right{right:10px}
+.player-card.small-player{margin:20px auto;max-width:600px}
+video{width:100%;border-radius:12px}
+.big-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#3b82f6;color:#fff;border:none;border-radius:50%;padding:20px;cursor:pointer}
+
+.ctrl{background:linear-gradient(90deg,var(--turq1),var(--turq2));color:#fff;border:0;padding:10px;border-radius:10px;cursor:pointer}
+.progress{flex:1;height:8px;background:#333;position:relative;border-radius:8px;overflow:hidden}
+.progress-buffer{height:100%;background:#666;width:0;position:absolute}
+.progress-filled{height:100%;background:#3b82f6;width:0;position:absolute}
+.time{font-size:14px;min-width:90px}
+.vol{width:100px}
+.premiere-title{text-align:center;font-size:22px;margin-top:20px;color:var(--turq1)}
+
+
+
+.poster-card:hover{transform:scale(1.05)}
+.meta{margin:20px;background:rgba(255,255,255,0.05);padding:12px;border-radius:12px}
+.footer{text-align:center;padding:20px;font-size:14px;color:#999}
+@media(max-width:768px){
+  .page-container{max-width:100%;margin:0;background:transparent;border:none}
+}
+
+/* Responsive logo text size */
+@media (max-width: 768px) {
+  
+}
+@media (max-width: 480px) {
+  
+}
+
+
+/* светлая тема */
+body[data-theme='light'] .topbar {
+  background: #fff; /* белый фон */
+}
+
+
+
+
+@media (max-width: 768px) {
+  
+}
+
+@media (max-width: 480px) {
+  
+}
+
+
+
+
+@media (max-width: 768px) {
+  
+}
+
+@media (max-width: 480px) {
+  
+}
+
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 120;
+  display: flex;
+  justify-content: space-between; /* логотип слева, кнопки справа */
+  align-items: center;
+  padding: 12px 18px;
+  background: #000; /* фон черный */
+}
+
+.logo-text {
+  font-family: 'Lobster', cursive;
+  font-size: 24px;
+  color: var(--turq1); /* бирюзовый */
+  margin: 0;
+}
+
+/* планшеты */
+@media (max-width: 768px) {
+  .player-card.small-player {
+    max-width: 360px;
+  }
+  video {
+    max-height: 200px;
+  }
+  .ctrl, .icon-btn {
+    padding: 4px 6px;
+    font-size: 12px;
+  }
+}
+
+/* смартфоны */
+@media (max-width: 480px) {
+  .player-card.small-player {
+    max-width: 240px; /* уменьшили ширину */
+    margin: 10px auto;
+  }
+  video {
+    max-height: 150px; /* картинка плеера и само видео меньше */
+  }
+  .ctrl, .icon-btn {
+    padding: 2px 4px;
+    font-size: 10px;
+  }
+  .big-play {
+    padding: 6px;
+    font-size: 12px;
+  }
+}
+
+
+
+
+
+.controls-row {
+  display: flex;
+  flex-wrap: nowrap;   /* запрещаем перенос */
+  justify-content: center; /* выравниваем по центру */
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;    /* если экран узкий — скролл по горизонтали */
+}
+
+.ctrl, .icon-btn {
+  flex: 0 0 auto;      /* фиксируем размер */
+}
+
+/* планшеты */
+@media (max-width: 768px) {
+  .ctrl, .icon-btn {
+    padding: 4px 6px;
+    font-size: 12px;
+  }
+  .time {
+    font-size: 12px;
+    min-width: 70px;
+  }
+  .vol {
+    width: 80px;
+  }
+}
+
+/* смартфоны */
+@media (max-width: 480px) {
+  .ctrl, .icon-btn {
+    padding: 2px 4px;
+    font-size: 10px;
+    min-width: auto;
+  }
+  .time {
+    font-size: 10px;
+    min-width: 55px;
+  }
+  .vol {
+    width: 60px;
+  }
+}
+
+
+
+
+
+
+
+
+.poster-card:hover {
+  transform: scale(1.05);
+}
+
+/* На планшетах постеры остаются рядами */
+@media (max-width: 768px) {
+  
+  
+}
+
+/* На смартфонах постеры в один ряд с прокруткой */
+@media (max-width: 480px) {
+  
+  
+  
+}
+
+
+
+
+
+
+
+
+/* планшеты */
+@media (max-width: 768px) {
+  
+  
+}
+
+/* смартфоны */
+@media (max-width: 480px) {
+  
+  
+  
+}
+
+
+.poster-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;           
+  margin-top: 20px;
+}
+
+.poster-card {
+  width: 200px;              /* одинаковая ширина */
+  height: 280px;             /* одинаковая высота */
+  border-radius: 16px;       /* скругленные края */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #111;          /* фон, если картинка меньше */
+}
+
+.poster-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         /* изображение заполняет блок равномерно */
+  border-radius: 16px;
+  transition: transform .3s;
+}
+
+.poster-card:hover img {
+  transform: scale(1.05);
+}
+
+/* планшеты (iPad, Android tablets, средние устройства) */
+@media (max-width: 1024px) {
+  .poster-card {
+    width: 180px;
+    height: 250px;
+  }
+}
+
+/* маленькие планшеты и большие смартфоны */
+@media (max-width: 768px) {
+  .poster-card {
+    width: 150px;
+    height: 210px;
+  }
+}
+
+/* смартфоны (iPhone, Android телефоны любых брендов) */
+@media (max-width: 480px) {
+  .poster-grid {
+    gap: 10px;
+  }
+  .poster-card {
+    width: 120px;
+    height: 170px;
+  }
+}
+/* Fullscreen video scaling */
+.video-wrap:fullscreen,
+.video-wrap:-webkit-full-screen,
+.video-wrap:-moz-full-screen,
+.video-wrap:-ms-fullscreen {
+  width: 100% !important;
+  height: 100% !important;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-wrap:fullscreen video,
+.video-wrap:-webkit-full-screen video,
+.video-wrap:-moz-full-screen video,
+.video-wrap:-ms-fullscreen video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}

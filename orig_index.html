@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mesropyans Production</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1 class="logo">Mesropyans Production</h1>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Переключить тему">
+      <span class="icon-sun" aria-hidden="true">
+        <!-- sun -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 4V2M12 22v-2M4 12H2M22 12h-2M5 5l-1.5-1.5M20.5 20.5L19 19M5 19L3.5 20.5M20.5 3.5L19 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="icon-moon" aria-hidden="true">
+        <!-- moon -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </button>
+  </header>
+
+  <main class="container">
+    <section class="carousel" aria-roledescription="carousel" aria-label="Главная карусель">
+      <div class="slides">
+        <!-- Slide 1: video -->
+        <div class="slide active" data-type="video">
+          <!-- Replace poster.mp4 with your video file in /assets/ or change path -->
+          <video class="carousel-media" muted playsinline preload="metadata">
+            <source src="videos/video1.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <!-- Slide 2: image -->
+        <div class="slide" data-type="image">
+          <img class="carousel-media" src="images/post1.jpg" alt="Пример изображения 1">
+        </div>
+
+        <!-- Slide 3: image -->
+        <div class="slide" data-type="image">
+          <img class="carousel-media" src="images/post2.jpg" alt="Пример изображения 2">
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="control prev" aria-label="Предыдущий">‹</button>
+        <button class="control next" aria-label="Следующий">›</button>
+      </div>
+
+      <div class="dots" role="tablist" aria-label="Навигация слайдов"></div>
+    </section>
+  
+    <section class="portfolio">
+
+      <div class="portfolio-gallery">
+        <div class="work-item"><img src="images/mama.jpg" alt="Моя работа 1"></div>
+        <div class="work-item"><img src="images/otec.jpg" alt="Моя работа 2"></div>
+        <div class="work-item"><img src="images/pm.jpg" alt="Моя работа 3"></div>
+      </div>
+  
+    
+  </main>
+
+  <footer class="site-footer">
+    <small>©Mesropyans Production - Все права защищены</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
