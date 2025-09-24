@@ -96,22 +96,79 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Fullscreen button (универсально для iOS, Android, ПК)
   if (fsBtn) {
-    fsBtn.addEventListener('click', () => {
+  fsBtn.addEventListener('click', async () => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    try {
+      // iOS native fullscreen
       if (isIOS && typeof video.webkitEnterFullscreen === 'function') {
         video.webkitEnterFullscreen();
         return;
       }
-      if (!document.fullscreenElement) {
-        if (video.requestFullscreen) video.requestFullscreen();
-        else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
-        else if (video.msRequestFullscreen) video.msRequestFullscreen();
-      } else {
-        if (document.exitFullscreen) document.exitFullscreen();
+
+      // If already fullscreen (standard API or webkit), exit
+      if (document.fullscreenElement || document.webkitIsFullScreen || video.webkitDisplayingFullscreen) {
+        if (document.exitFullscreen) await document.exitFullscreen();
         else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-        else if (document.msExitFullscreen) document.msExitFullscreen();
+        else if (document.msExitFullscreen) document.msExitFullscreen && document.msExitFullscreen();
+        return;
       }
-    });
-  }
+
+      // Try multiple fullscreen entry methods on video first (better support on many Android devices)
+      async function tryEnter() {
+        try {
+          if (video.requestFullscreen) {
+            await video.requestFullscreen();
+            return true;
+          } else if (video.webkitRequestFullscreen) {
+            await video.webkitRequestFullscreen();
+            return true;
+          } else if (video.msRequestFullscreen) {
+            await video.msRequestFullscreen();
+            return true;
+          }
+        } catch(e) { /* ignore */ }
+        // Next, try on container .video-wrap
+        try {
+          const videoWrap = document.querySelector('.video-wrap');
+          if (videoWrap && videoWrap.requestFullscreen) {
+            await videoWrap.requestFullscreen();
+            return true;
+          } else if (videoWrap && videoWrap.webkitRequestFullscreen) {
+            await videoWrap.webkitRequestFullscreen();
+            return true;
+          }
+        } catch(e){ /* ignore */ }
+        // Fallback: try documentElement
+        try {
+          if (document.documentElement.requestFullscreen) {
+            await document.documentElement.requestFullscreen();
+            return true;
+          }
+        } catch(e){ /* ignore */ }
+        return false;
+      }
+
+      // First attempt
+      let ok = await tryEnter();
+      if (!ok) {
+        // Some Android browsers require the video to be playing to enter fullscreen.
+        // Try to start playback (user gesture) and then request fullscreen again.
+        try { await video.play(); } catch(e){ /* ignore */ }
+        ok = await tryEnter();
+      }
+      // If still not ok, as a last resort, toggle controls to allow user to use native player UI
+      if (!ok) {
+        try {
+          video.controls = true;
+          // give user a hint: briefly flash controls
+          setTimeout(()=>{ video.controls = false; }, 3000);
+        } catch(e){ /* ignore */ }
+      }
+    } catch(err) {
+      console.warn('Fullscreen handling error', err);
+    }
+  });
+}
 
   // Fullscreen change events
   document.addEventListener('fullscreenchange', ()=>{
