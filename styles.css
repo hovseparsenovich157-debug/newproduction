@@ -278,24 +278,3 @@ body[data-theme='light'] .topbar {
     height: 170px;
   }
 }
-/* Fullscreen video scaling */
-.video-wrap:fullscreen,
-.video-wrap:-webkit-full-screen,
-.video-wrap:-moz-full-screen,
-.video-wrap:-ms-fullscreen {
-  width: 100% !important;
-  height: 100% !important;
-  background: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.video-wrap:fullscreen video,
-.video-wrap:-webkit-full-screen video,
-.video-wrap:-moz-full-screen video,
-.video-wrap:-ms-fullscreen video {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain;
-}
