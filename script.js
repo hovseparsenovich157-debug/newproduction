@@ -168,3 +168,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
+
+const video = document.getElementById('myVideo');
+const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+fullscreenBtn.addEventListener('click', () => {
+  if (video.requestFullscreen) {
+    video.requestFullscreen();        // ПК и Android
+  } else if (video.webkitEnterFullscreen) {
+    video.webkitEnterFullscreen();    // iPhone
+  } else if (video.webkitRequestFullscreen) {
+    video.webkitRequestFullscreen();  // старые версии Safari
+  } else {
+    alert("Fullscreen недоступен на этом устройстве");
+  }
+});
