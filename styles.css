@@ -278,3 +278,18 @@ body[data-theme='light'] .topbar {
     height: 170px;
   }
 }
+
+#fullscreenBtn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #40E0D0; /* бирюзовый цвет */
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  #fullscreenBtn:hover {
+    background-color: #33cfcf; /* чуть темнее при наведении */
+
