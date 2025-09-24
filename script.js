@@ -52,10 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if(!video) return;
 
-  // Убираем стандартные controls по умолчанию
+  // Убираем стандартные controls по умолчанию (только кастомный плеер)
   video.controls = false;
-
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
   // Play / Pause
   if(playBtn){
@@ -94,100 +92,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Fullscreen button (универсально для iOS, Android, ПК)
+  // Fullscreen button
   if (fsBtn) {
-  fsBtn.addEventListener('click', async () => {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    try {
-      // iOS native fullscreen
-      if (isIOS && typeof video.webkitEnterFullscreen === 'function') {
-        video.webkitEnterFullscreen();
-        return;
-      }
-
-      // If already fullscreen (standard API or webkit), exit
-      if (document.fullscreenElement || document.webkitIsFullScreen || video.webkitDisplayingFullscreen) {
-        if (document.exitFullscreen) await document.exitFullscreen();
+    fsBtn.addEventListener('click', () => {
+      const el = video; // fullscreen на самом video
+      if (!document.fullscreenElement) {
+        if (el.requestFullscreen) el.requestFullscreen();
+        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+        else if (el.msRequestFullscreen) el.msRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
         else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-        else if (document.msExitFullscreen) document.msExitFullscreen && document.msExitFullscreen();
-        return;
+        else if (document.msExitFullscreen) document.msExitFullscreen();
       }
+    });
+  }
 
-      // Try multiple fullscreen entry methods on video first (better support on many Android devices)
-      async function tryEnter() {
-        try {
-          if (video.requestFullscreen) {
-            await video.requestFullscreen();
-            return true;
-          } else if (video.webkitRequestFullscreen) {
-            await video.webkitRequestFullscreen();
-            return true;
-          } else if (video.msRequestFullscreen) {
-            await video.msRequestFullscreen();
-            return true;
-          }
-        } catch(e) { /* ignore */ }
-        // Next, try on container .video-wrap
-        try {
-          const videoWrap = document.querySelector('.video-wrap');
-          if (videoWrap && videoWrap.requestFullscreen) {
-            await videoWrap.requestFullscreen();
-            return true;
-          } else if (videoWrap && videoWrap.webkitRequestFullscreen) {
-            await videoWrap.webkitRequestFullscreen();
-            return true;
-          }
-        } catch(e){ /* ignore */ }
-        // Fallback: try documentElement
-        try {
-          if (document.documentElement.requestFullscreen) {
-            await document.documentElement.requestFullscreen();
-            return true;
-          }
-        } catch(e){ /* ignore */ }
-        return false;
-      }
-
-      // First attempt
-      let ok = await tryEnter();
-      if (!ok) {
-        // Some Android browsers require the video to be playing to enter fullscreen.
-        // Try to start playback (user gesture) and then request fullscreen again.
-        try { await video.play(); } catch(e){ /* ignore */ }
-        ok = await tryEnter();
-      }
-      // If still not ok, as a last resort, toggle controls to allow user to use native player UI
-      if (!ok) {
-        try {
-          video.controls = true;
-          // give user a hint: briefly flash controls
-          setTimeout(()=>{ video.controls = false; }, 3000);
-        } catch(e){ /* ignore */ }
-      }
-    } catch(err) {
-      console.warn('Fullscreen handling error', err);
-    }
-  });
-}
-
-  // Fullscreen change events
-  document.addEventListener('fullscreenchange', ()=>{
-    if(document.fullscreenElement){
+  // Когда входим / выходим из fullscreen
+  document.addEventListener('fullscreenchange', () => {
+    if (document.fullscreenElement) {
+      // В fullscreen → нативные controls
       video.controls = true;
-      if(controlsRow) controlsRow.style.display = 'none';
+      if (controlsRow) controlsRow.style.display = 'none';
     } else {
+      // В обычном режиме → кастомный плеер
       video.controls = false;
-      if(controlsRow) controlsRow.style.display = 'flex';
+      if (controlsRow) controlsRow.style.display = 'flex';
     }
   });
 
-  video.addEventListener('webkitbeginfullscreen', ()=>{
+  // Для iOS Safari
+  video.addEventListener('webkitbeginfullscreen', () => {
     video.controls = true;
-    if(controlsRow) controlsRow.style.display = 'none';
+    if (controlsRow) controlsRow.style.display = 'none';
   });
-  video.addEventListener('webkitendfullscreen', ()=>{
+  video.addEventListener('webkitendfullscreen', () => {
     video.controls = false;
-    if(controlsRow) controlsRow.style.display = 'flex';
+    if (controlsRow) controlsRow.style.display = 'flex';
   });
 
   // Progress bar click (seek)
