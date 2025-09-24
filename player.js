@@ -146,3 +146,26 @@
   updatePlayState();
 
 })();
+
+fsBtn.addEventListener('click', async () => {
+  const el = video;
+  try {
+    if (!document.fullscreenElement && !video.webkitDisplayingFullscreen) {
+      // Prioritize webkitEnterFullscreen for iOS Safari
+      if (el.webkitEnterFullscreen) {
+        el.webkitEnterFullscreen(); // iOS native fullscreen for video
+      } else if (el.requestFullscreen) {
+        await el.requestFullscreen(); // Standard fullscreen for other browsers
+      }
+    } else {
+      // Exit fullscreen (standard or iOS)
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      } else if (video.webkitDisplayingFullscreen) {
+        video.webkitExitFullscreen();
+      }
+    }
+  } catch (e) {
+    console.warn('Fullscreen error:', e);
+  }
+});
