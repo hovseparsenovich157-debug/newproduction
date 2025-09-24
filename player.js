@@ -169,3 +169,14 @@ fsBtn.addEventListener('click', async () => {
     console.warn('Fullscreen error:', e);
   }
 });
+
+  // fullscreen
+  fsBtn.addEventListener('click', ()=> {
+    const el = video;
+    if(!document.fullscreenElement){
+      if(el.requestFullscreen) el.requestFullscreen().catch(()=>{});
+      else if(el.webkitEnterFullscreen) el.webkitEnterFullscreen(); // iOS Safari fullscreen for video tag
+    } else {
+      document.exitFullscreen().catch(()=>{});
+    }
+  });
