@@ -12,13 +12,13 @@
 <body data-theme="dark">
   <div class="page-container">
     <header class="topbar" id="topbar">
-  <div class="logo-text">Mesropyans Production</div>
-  <div class="controls">
-    <button id="homeBtn" class="icon-btn" title="Home">🏠</button>
-    <button id="themeBtn" class="icon-btn" title="Theme">🌙</button>
-    <button id="langToggle" class="icon-btn" title="Language">🌐</button>
-  </div>
-</header>
+      <div class="logo-text">Mesropyans Production</div>
+      <div class="controls">
+        <button id="homeBtn" class="icon-btn" title="Home">🏠</button>
+        <button id="themeBtn" class="icon-btn" title="Theme">🌙</button>
+        <button id="langToggle" class="icon-btn" title="Language">🌐</button>
+      </div>
+    </header>
 
     <section class="carousel-wrap" aria-label="Gallery">
       <div class="carousel">
@@ -34,10 +34,9 @@
     <main class="container">
       <section class="player-card small-player">
         <div class="video-wrap">
-          <video id="playerVideo" preload="metadata" poster="post4.jpg" playsinline>
+          <video id="playerVideo" preload="metadata" poster="post4.jpg" playsinline webkit-playsinline>
             <source src="video1.mp4" type="video/mp4">
           </video>
-    
         </div>
         <div class="controls-row">
           <button id="playBtn" class="ctrl" aria-label="Play">▶</button>
@@ -74,10 +73,55 @@
     </main>
 
     <footer class="footer">
-     <p data-i12n-lang="ru"style="display:none"> © Mesropyans Production — Все права защищены.</p>
+     <p data-i12n-lang="ru" style="display:none"> © Mesropyans Production — Все права защищены.</p>
      <p data-i12n-lang="en">© Mesropyans Production — All rights reserved.</p>
     </footer>
   </div>
-  <script src="script.js"></script>
+
+  <!-- Скрипт для управления плеером -->
+  <script>
+    const video = document.getElementById('playerVideo');
+    const playBtn = document.getElementById('playBtn');
+    const muteBtn = document.getElementById('muteBtn');
+    const volSlider = document.getElementById('vol');
+    const fsBtn = document.getElementById('fsBtn');
+
+    // Play / Pause
+    playBtn.addEventListener('click', () => {
+      if (video.paused) {
+        video.play();
+        playBtn.textContent = '⏸';
+      } else {
+        video.pause();
+        playBtn.textContent = '▶';
+      }
+    });
+
+    // Mute / Unmute
+    muteBtn.addEventListener('click', () => {
+      video.muted = !video.muted;
+      muteBtn.textContent = video.muted ? '🔇' : '🔊';
+    });
+
+    // Громкость
+    volSlider.addEventListener('input', () => {
+      video.volume = volSlider.value;
+      video.muted = video.volume === 0;
+      muteBtn.textContent = video.muted ? '🔇' : '🔊';
+    });
+
+    // Fullscreen
+    fsBtn.addEventListener('click', () => {
+      if (video.webkitEnterFullscreen) {
+        video.webkitEnterFullscreen(); // iPhone
+      } else if (video.requestFullscreen) {
+        video.requestFullscreen();      // ПК и Android
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen(); // старые Safari
+      } else {
+        alert("Fullscreen недоступен на этом устройстве");
+      }
+    });
+  </script>
 </body>
 </html>
