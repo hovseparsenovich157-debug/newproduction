@@ -52,10 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if(!video) return;
 
-  // Disable native controls by default (custom player in normal mode)
+  // Убираем стандартные controls по умолчанию
   video.controls = false;
 
-  // Detect iOS
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
   // Play / Pause
@@ -90,42 +89,31 @@ document.addEventListener('DOMContentLoaded', () => {
           if(muteBtn) muteBtn.textContent = video.muted ? '🔇' : '🔊';
         }
       } catch(e){
-        console.warn('Изменение громкости ограничено на этом устройстве');
+        console.warn('Изменение громкости может быть ограничено на этом устройстве');
       }
     });
   }
 
-  // Fullscreen handling
-  function enterFullscreen() {
-    if(isIOS && typeof video.webkitEnterFullscreen === 'function') {
-      video.webkitEnterFullscreen();
-      return;
-    }
-    if(video.requestFullscreen) video.requestFullscreen();
-    else if(video.webkitRequestFullscreen) video.webkitRequestFullscreen();
-    else if(video.msRequestFullscreen) video.msRequestFullscreen();
-  }
-
-  function exitFullscreen() {
-    if(document.exitFullscreen) document.exitFullscreen();
-    else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
-    else if(document.msExitFullscreen) document.msExitFullscreen();
-  }
-
-  if(fsBtn){
-    fsBtn.addEventListener('click', ()=>{
-      if(isIOS && video.webkitDisplayingFullscreen){
-        // exit fullscreen on iOS
-        try { video.webkitExitFullscreen(); } catch(e) {}
-      } else if(document.fullscreenElement){
-        exitFullscreen();
+  // Fullscreen button (универсально для iOS, Android, ПК)
+  if (fsBtn) {
+    fsBtn.addEventListener('click', () => {
+      if (isIOS && typeof video.webkitEnterFullscreen === 'function') {
+        video.webkitEnterFullscreen();
+        return;
+      }
+      if (!document.fullscreenElement) {
+        if (video.requestFullscreen) video.requestFullscreen();
+        else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+        else if (video.msRequestFullscreen) video.msRequestFullscreen();
       } else {
-        enterFullscreen();
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        else if (document.msExitFullscreen) document.msExitFullscreen();
       }
     });
   }
 
-  // Standard fullscreen events
+  // Fullscreen change events
   document.addEventListener('fullscreenchange', ()=>{
     if(document.fullscreenElement){
       video.controls = true;
@@ -136,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // iOS fullscreen events
   video.addEventListener('webkitbeginfullscreen', ()=>{
     video.controls = true;
     if(controlsRow) controlsRow.style.display = 'none';
@@ -183,28 +170,3 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
-
-// Fullscreen button (универсально для iOS, Android, ПК)
-if (fsBtn) {
-  fsBtn.addEventListener('click', () => {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-
-    if (isIOS && typeof video.webkitEnterFullscreen === 'function') {
-      // На iPhone/iPad открываем нативный fullscreen
-      video.webkitEnterFullscreen();
-      return;
-    }
-
-    if (!document.fullscreenElement) {
-      // На Android и ПК лучше вызывать fullscreen именно на <video>
-      if (video.requestFullscreen) video.requestFullscreen();
-      else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
-      else if (video.msRequestFullscreen) video.msRequestFullscreen();
-    } else {
-      // Выход из fullscreen
-      if (document.exitFullscreen) document.exitFullscreen();
-      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-      else if (document.msExitFullscreen) document.msExitFullscreen();
-    }
-  });
-}
