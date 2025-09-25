@@ -1,83 +1,112 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mesropyans — Forever</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
+/* Carousel behavior + theme toggle + responsive video handling */
+const slides = document.querySelectorAll('.slide');
+const dotsWrap = document.querySelector('.dots');
+const prevBtn = document.querySelector('.prev');
+const nextBtn = document.querySelector('.next');
+let index = 0;
+let autoplayInterval = 2000;
+let timer = null;
 
-<body data-theme="dark">
-  <div class="page-container">
-    <header class="topbar" id="topbar">
-  <div class="logo-text">Mesropyans Production</div>
-  <div class="controls">
-    <button id="homeBtn" class="icon-btn" title="Home">🏠</button>
-    <button id="themeBtn" class="icon-btn" title="Theme">🌙</button>
-    <button id="langToggle" class="icon-btn" title="Language">🌐</button>
-  </div>
-</header>
+// build dots
+if (dotsWrap) {
+  slides.forEach((s,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'dot' + (i===0? ' active':'');
+    btn.setAttribute('aria-label', 'Перейти к слайду ' + (i+1));
+    btn.addEventListener('click', ()=> goTo(i));
+    dotsWrap.appendChild(btn);
+  });
+}
 
-    <section class="carousel-wrap" aria-label="Gallery">
-      <div class="carousel">
-        <button class="arrow left" id="arrowLeft" aria-label="Previous">‹</button>
-        <div class="slide active"><img src="post1.jpg" alt="Slide 1"></div>
-        <div class="slide"><img src="post2.jpg" alt="Slide 2"></div>
-        <div class="slide"><img src="post3.jpg" alt="Slide 3"></div>
-        <div class="slide"><img src="Whisk_353b4bfc37af7fd971246dd2b21f6a92eg.png" alt="Slide 4"></div>
-        <button class="arrow right" id="arrowRight" aria-label="Next">›</button>
-      </div>
-    </section>
+function activate(i){
+  slides.forEach((s,idx)=>{
+    s.classList.toggle('active', idx===i);
+    const media = s.querySelector('.carousel-media');
+    if(media){
+      if(media.tagName === 'VIDEO'){
+        if(idx===i){
+          media.currentTime = 0;
+          media.muted = true;
+          const p = media.play();
+          if(p && p.catch) p.catch(()=>{});
+        } else {
+          media.pause();
+          try{ media.currentTime = 0 }catch(e){}
+        }
+      }
+    }
+  });
+  document.querySelectorAll('.dot').forEach((d,di)=> d.classList.toggle('active', di===i));
+}
 
-    <main class="container">
-      <section class="player-card small-player">
-        <div class="video-wrap">
-          <video id="playerVideo" preload="metadata" poster="post4.jpg" playsinline>
-            <source src="video1.mp4" type="video/mp4">
-          </video>
-    
-        </div>
-        <div class="controls-row">
-          <button id="playBtn" class="ctrl" aria-label="Play">▶</button>
-          <div class="progress" id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-            <div id="progressBuffer" class="progress-buffer"></div>
-            <div id="progressFilled" class="progress-filled"></div>
-          </div>
-          <div class="time"><span id="curTime">0:00</span>/<span id="durTime">0:00</span></div>
-          <button id="muteBtn" class="ctrl" aria-label="Mute">🔊</button>
-          <input id="vol" class="vol" type="range" min="0" max="1" step="0.01" value="1" aria-label="Volume">
-          <button id="fsBtn" class="ctrl" aria-label="Fullscreen">⛶</button>
-        </div>
-      </section>
+function goTo(i){
+  index = (i + slides.length) % slides.length;
+  activate(index);
+  resetTimer();
+}
 
-      <h2 data-i10n-lang="en" class="premiere-title">Premiere of the year</h2>
-      <h2 data-i10n-lang="ru" style="display:none" class="premiere-title">Премьера года</h2>
-      <section class="posters">
-        <div class="poster-grid">
-          <div class="poster-card"><img src="photo_2025-09-24_17-14-42.jpg" alt="Poster A"></div>
-          <div class="poster-card"><img src="photo_2025-09-24_17-14-41.jpg" alt="Poster B"></div>
-        </div>
-      </section>
+if (nextBtn) nextBtn.addEventListener('click', ()=> goTo(index+1));
+if (prevBtn) prevBtn.addEventListener('click', ()=> goTo(index-1));
 
-      <section class="meta">
-        <h2 data-i16n-lang="en">Description</h2>
-        <h2 data-i16n-lang="ru" style="display:none">Описание</h2>
-        <p data-i18n-lang="en">
-          In 2008, during the war, a young man draws a girl — and she comes to life. She runs away from home and he chases her, finding her in a mysterious place. Later her ring is stolen and together they set out to find the thief. In the finale Armageddon begins: they help search for missing people. The film ends with hope and light.
-        </p>
-        <p data-i18n-lang="ru" style="display:none">
-          В 2008 году, во время войны, молодой парень рисует девушку — и она оживает. Она убегает из дома; он преследует её и находит в странном месте. Позже у неё крадут кольцо, и они вместе отправляются на поиски преступника. В финале начинается Армагеддон: они помогают находить пропавших людей. Фильм заканчивается с надеждой и светом.
-        </p>
-      </section>
-    </main>
+function startTimer(){
+  timer = setInterval(()=> goTo(index+1), autoplayInterval);
+}
+function resetTimer(){
+  if(timer) { clearInterval(timer); startTimer(); }
+}
 
-    <footer class="footer">
-     <p data-i12n-lang="ru"style="display:none"> © Mesropyans Production — Все права защищены.</p>
-     <p data-i12n-lang="en">© Mesropyans Production — All rights reserved.</p>
-    </footer>
-  </div>
-  <script src="script.js"></script>
-</body>
-</html>
+const carouselEl = document.querySelector('.carousel');
+if (carouselEl){
+  carouselEl.addEventListener('pointerenter', ()=> { if(timer){ clearInterval(timer); timer = null } });
+  carouselEl.addEventListener('pointerleave', ()=> { if(!timer) startTimer(); });
+}
+
+activate(0);
+startTimer();
+
+/* Theme toggle */
+const themeBtn = document.getElementById('themeBtn');
+const root = document.documentElement;
+const saved = localStorage.getItem('site-theme');
+if(saved) root.setAttribute('data-theme', saved);
+else {
+  const darkPref = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  root.setAttribute('data-theme', darkPref ? 'dark' : 'light');
+}
+if (themeBtn){
+  themeBtn.addEventListener('click', ()=>{
+    const now = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', now);
+    localStorage.setItem('site-theme', now);
+  });
+}
+
+/* keyboard navigation */
+document.addEventListener('keyup', (e)=>{
+  if(e.key === 'ArrowRight') goTo(index+1);
+  if(e.key === 'ArrowLeft') goTo(index-1);
+});
+
+function unlockVideos(){
+  document.querySelectorAll('video').forEach(v=>{ v.muted = true; const p=v.play(); if(p && p.catch) p.catch(()=>{}); });
+  window.removeEventListener('pointerdown', unlockVideos);
+  window.removeEventListener('keydown', unlockVideos);
+}
+window.addEventListener('pointerdown', unlockVideos);
+window.addEventListener('keydown', unlockVideos);
+
+/* ----------- Fullscreen Handler (как на старом сайте) ----------- */
+const video = document.getElementById("playerVideo");
+const fsBtn = document.getElementById("fsBtn");
+
+if (video && fsBtn) {
+  fsBtn.addEventListener("click", () => {
+    if (video.requestFullscreen) {
+      video.requestFullscreen();
+    } else if (video.webkitRequestFullscreen) {
+      video.webkitRequestFullscreen(); // Safari desktop
+    } else if (video.webkitEnterFullscreen) {
+      video.webkitEnterFullscreen();   // iPhone Safari
+    }
+  });
+}
