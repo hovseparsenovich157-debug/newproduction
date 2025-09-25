@@ -1,181 +1,83 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // --- Carousel ---
-  const slides = document.querySelectorAll('.slide');
-  let idx = 0;
-  function show(i){ slides.forEach((s,n)=> s.classList.toggle('active', n===i)); }
-  function next(){ idx = (idx+1) % slides.length; show(idx); }
-  function prev(){ idx = (idx-1+slides.length) % slides.length; show(idx); }
-  const arrowRight = document.getElementById('arrowRight');
-  const arrowLeft = document.getElementById('arrowLeft');
-  if(arrowRight) arrowRight.addEventListener('click', next);
-  if(arrowLeft) arrowLeft.addEventListener('click', prev);
-  if(slides.length) show(0);
-  setInterval(next, 4000);
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mesropyans — Forever</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
 
-  // --- Theme toggle ---
-  const body = document.body;
-  const themeBtn = document.getElementById('themeBtn');
-  if(themeBtn){
-    themeBtn.addEventListener('click', ()=>{
-      body.setAttribute('data-theme', body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-    });
-  }
+<body data-theme="dark">
+  <div class="page-container">
+    <header class="topbar" id="topbar">
+  <div class="logo-text">Mesropyans Production</div>
+  <div class="controls">
+    <button id="homeBtn" class="icon-btn" title="Home">🏠</button>
+    <button id="themeBtn" class="icon-btn" title="Theme">🌙</button>
+    <button id="langToggle" class="icon-btn" title="Language">🌐</button>
+  </div>
+</header>
 
-  // --- Language toggle ---
-  const langToggle = document.getElementById('langToggle');
-  if(langToggle){
-    langToggle.addEventListener('click', ()=>{
-      const all = document.querySelectorAll('[data-i18n-lang]');
-      all.forEach(el => {
-        el.style.display = (el.style.display === 'none') ? '' : 'none';
-      });
-    });
-  }
+    <section class="carousel-wrap" aria-label="Gallery">
+      <div class="carousel">
+        <button class="arrow left" id="arrowLeft" aria-label="Previous">‹</button>
+        <div class="slide active"><img src="post1.jpg" alt="Slide 1"></div>
+        <div class="slide"><img src="post2.jpg" alt="Slide 2"></div>
+        <div class="slide"><img src="post3.jpg" alt="Slide 3"></div>
+        <div class="slide"><img src="Whisk_353b4bfc37af7fd971246dd2b21f6a92eg.png" alt="Slide 4"></div>
+        <button class="arrow right" id="arrowRight" aria-label="Next">›</button>
+      </div>
+    </section>
 
-  // --- Home button ---
-  const homeBtn = document.getElementById('homeBtn');
-  if(homeBtn){
-    homeBtn.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
-  }
+    <main class="container">
+      <section class="player-card small-player">
+        <div class="video-wrap">
+          <video id="playerVideo" preload="metadata" poster="post4.jpg" playsinline>
+            <source src="video1.mp4" type="video/mp4">
+          </video>
+    
+        </div>
+        <div class="controls-row">
+          <button id="playBtn" class="ctrl" aria-label="Play">▶</button>
+          <div class="progress" id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <div id="progressBuffer" class="progress-buffer"></div>
+            <div id="progressFilled" class="progress-filled"></div>
+          </div>
+          <div class="time"><span id="curTime">0:00</span>/<span id="durTime">0:00</span></div>
+          <button id="muteBtn" class="ctrl" aria-label="Mute">🔊</button>
+          <input id="vol" class="vol" type="range" min="0" max="1" step="0.01" value="1" aria-label="Volume">
+          <button id="fsBtn" class="ctrl" aria-label="Fullscreen">⛶</button>
+        </div>
+      </section>
 
-  // --- Video controls ---
-  const video = document.getElementById('playerVideo');
-  if(!video) return;
+      <h2 data-i10n-lang="en" class="premiere-title">Premiere of the year</h2>
+      <h2 data-i10n-lang="ru" style="display:none" class="premiere-title">Премьера года</h2>
+      <section class="posters">
+        <div class="poster-grid">
+          <div class="poster-card"><img src="photo_2025-09-24_17-14-42.jpg" alt="Poster A"></div>
+          <div class="poster-card"><img src="photo_2025-09-24_17-14-41.jpg" alt="Poster B"></div>
+        </div>
+      </section>
 
-  const playBtn = document.getElementById('playBtn');
-  const muteBtn = document.getElementById('muteBtn');
-  const fsBtn = document.getElementById('fsBtn');
-  const volume = document.getElementById('vol');
-  const progress = document.getElementById('progress');
-  const progressFilled = document.getElementById('progressFilled');
-  const curTime = document.getElementById('curTime');
-  const durTime = document.getElementById('durTime');
-  const controlsRow = document.querySelector('.controls-row');
+      <section class="meta">
+        <h2 data-i16n-lang="en">Description</h2>
+        <h2 data-i16n-lang="ru" style="display:none">Описание</h2>
+        <p data-i18n-lang="en">
+          In 2008, during the war, a young man draws a girl — and she comes to life. She runs away from home and he chases her, finding her in a mysterious place. Later her ring is stolen and together they set out to find the thief. In the finale Armageddon begins: they help search for missing people. The film ends with hope and light.
+        </p>
+        <p data-i18n-lang="ru" style="display:none">
+          В 2008 году, во время войны, молодой парень рисует девушку — и она оживает. Она убегает из дома; он преследует её и находит в странном месте. Позже у неё крадут кольцо, и они вместе отправляются на поиски преступника. В финале начинается Армагеддон: они помогают находить пропавших людей. Фильм заканчивается с надеждой и светом.
+        </p>
+      </section>
+    </main>
 
-  video.controls = false;
-
-  // Play / Pause
-  if(playBtn){
-    playBtn.addEventListener('click', ()=>{
-      if(video.paused){
-        video.play().catch(()=>{});
-        playBtn.textContent = '⏸';
-      } else {
-        video.pause();
-        playBtn.textContent = '▶';
-      }
-    });
-  }
-
-  // Mute toggle
-  if(muteBtn){
-    muteBtn.addEventListener('click', ()=>{
-      video.muted = !video.muted;
-      muteBtn.textContent = video.muted ? '🔇' : '🔊';
-    });
-  }
-
-  // Volume slider
-  if(volume){
-    volume.addEventListener('input', ()=>{
-      const v = parseFloat(volume.value);
-      if(!isNaN(v)){
-        video.volume = v;
-        video.muted = video.volume === 0;
-        if(muteBtn) muteBtn.textContent = video.muted ? '🔇' : '🔊';
-      }
-    });
-  }
-
-  // --- Fullscreen универсальный ---
-  if(fsBtn){
-    fsBtn.addEventListener('click', () => {
-      const ua = navigator.userAgent || "";
-      const isIOS = /iPhone|iPad|iPod/i.test(ua);
-      const isSafari = /^((?!chrome|android).)*safari/i.test(ua);
-      const isWebView = /(FBAN|FBAV|Instagram|Line|Twitter)/i.test(ua);
-
-      if(isIOS && isSafari){
-        // iPhone Safari → нативный fullscreen
-        if(video.webkitEnterFullscreen){
-          video.webkitEnterFullscreen();
-        } else {
-          alert("Fullscreen недоступен. Нажмите на видео для полноэкранного режима.");
-        }
-      } else if(isIOS && isWebView){
-        // iOS WebView (Telegram/Instagram) → fullscreen заблокирован
-        alert("Fullscreen недоступен в Telegram/Instagram. Откройте сайт в Safari для просмотра видео на весь экран.");
-      } else {
-        // ПК и Android
-        if(document.fullscreenElement){
-          document.exitFullscreen();
-        } else if(video.requestFullscreen){
-          video.requestFullscreen();
-        } else if(video.webkitRequestFullscreen){
-          video.webkitRequestFullscreen();
-        } else if(video.msRequestFullscreen){
-          video.msRequestFullscreen();
-        } else {
-          alert("Fullscreen недоступен на этом устройстве.");
-        }
-      }
-    });
-  }
-
-  // Fullscreen events
-  document.addEventListener('fullscreenchange', () => {
-    if(document.fullscreenElement){
-      video.controls = true;
-      if(controlsRow) controlsRow.style.display = 'none';
-    } else {
-      video.controls = false;
-      if(controlsRow) controlsRow.style.display = 'flex';
-    }
-  });
-
-  // iOS Safari fullscreen events
-  video.addEventListener('webkitbeginfullscreen', () => {
-    video.controls = true;
-    if(controlsRow) controlsRow.style.display = 'none';
-  });
-  video.addEventListener('webkitendfullscreen', () => {
-    video.controls = false;
-    if(controlsRow) controlsRow.style.display = 'flex';
-  });
-
-  // Progress bar click
-  if(progress){
-    progress.addEventListener('click', (e)=>{
-      if(!video.duration || isNaN(video.duration)) return;
-      const rect = progress.getBoundingClientRect();
-      const percent = (e.clientX - rect.left) / rect.width;
-      video.currentTime = percent * video.duration;
-    });
-  }
-
-  // Update progress
-  video.addEventListener('timeupdate', ()=>{
-    if(!video.duration || isNaN(video.duration)) return;
-    const percent = (video.currentTime / video.duration) * 100;
-    if(progressFilled) progressFilled.style.width = percent + '%';
-    let m = Math.floor(video.currentTime / 60);
-    let s = Math.floor(video.currentTime % 60);
-    if(s < 10) s = '0'+s;
-    if(curTime) curTime.textContent = `${m}:${s}`;
-  });
-
-  // Total duration
-  video.addEventListener('loadedmetadata', ()=>{
-    if(!video.duration || isNaN(video.duration)) return;
-    let m = Math.floor(video.duration / 60);
-    let s = Math.floor(video.duration % 60);
-    if(s < 10) s = '0'+s;
-    if(durTime) durTime.textContent = `${m}:${s}`;
-  });
-
-  // Sync mute icon
-  video.addEventListener('volumechange', ()=>{
-    if(muteBtn) muteBtn.textContent = (video.muted || video.volume===0) ? '🔇' : '🔊';
-    if(volume && typeof video.volume==='number') volume.value = String(video.volume);
-  });
-});
+    <footer class="footer">
+     <p data-i12n-lang="ru"style="display:none"> © Mesropyans Production — Все права защищены.</p>
+     <p data-i12n-lang="en">© Mesropyans Production — All rights reserved.</p>
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
