@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const langToggle = document.getElementById('langToggle');
   if(langToggle){
     langToggle.addEventListener('click', ()=>{
-      const all = document.querySelectorAll('[data-i18n-lang],[data-i16n-lang],[data-i12n-lang],[data-i10n-lang]');
+      const all = document.querySelectorAll('[data-i18n-lang]');
       all.forEach(el => {
         el.style.display = (el.style.display === 'none') ? '' : 'none';
       });
@@ -87,31 +87,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Fullscreen button — универсальный
-  if (fsBtn) {
+  // --- Fullscreen универсальный ---
+  if(fsBtn){
     fsBtn.addEventListener('click', () => {
-      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const ua = navigator.userAgent || "";
+      const isIOS = /iPhone|iPad|iPod/i.test(ua);
+      const isSafari = /^((?!chrome|android).)*safari/i.test(ua);
+      const isWebView = /(FBAN|FBAV|Instagram|Line|Twitter)/i.test(ua);
 
-      if (isIOS && video.webkitEnterFullscreen) {
-        // iPhone / iPad → только нативный fullscreen
-        video.webkitEnterFullscreen();
-      } else {
-        if (document.fullscreenElement) {
-          document.exitFullscreen();
-        } else if (video.requestFullscreen) {
-          video.requestFullscreen(); // ПК и Android
-        } else if (video.webkitRequestFullscreen) {
-          video.webkitRequestFullscreen(); // старый Safari
-        } else if (video.msRequestFullscreen) {
-          video.msRequestFullscreen(); // старый Edge
+      if(isIOS && isSafari){
+        // iPhone Safari → нативный fullscreen
+        if(video.webkitEnterFullscreen){
+          video.webkitEnterFullscreen();
         } else {
-          alert("Fullscreen не поддерживается на этом устройстве.");
+          alert("Fullscreen недоступен. Нажмите на видео для полноэкранного режима.");
+        }
+      } else if(isIOS && isWebView){
+        // iOS WebView (Telegram/Instagram) → fullscreen заблокирован
+        alert("Fullscreen недоступен в Telegram/Instagram. Откройте сайт в Safari для просмотра видео на весь экран.");
+      } else {
+        // ПК и Android
+        if(document.fullscreenElement){
+          document.exitFullscreen();
+        } else if(video.requestFullscreen){
+          video.requestFullscreen();
+        } else if(video.webkitRequestFullscreen){
+          video.webkitRequestFullscreen();
+        } else if(video.msRequestFullscreen){
+          video.msRequestFullscreen();
+        } else {
+          alert("Fullscreen недоступен на этом устройстве.");
         }
       }
     });
   }
 
-  // Fullscreen change events (ПК/Android)
+  // Fullscreen events
   document.addEventListener('fullscreenchange', () => {
     if(document.fullscreenElement){
       video.controls = true;
@@ -135,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Progress bar click
   if(progress){
     progress.addEventListener('click', (e)=>{
-      if (!video.duration || isNaN(video.duration)) return;
+      if(!video.duration || isNaN(video.duration)) return;
       const rect = progress.getBoundingClientRect();
       const percent = (e.clientX - rect.left) / rect.width;
       video.currentTime = percent * video.duration;
@@ -144,27 +155,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Update progress
   video.addEventListener('timeupdate', ()=>{
-    if (!video.duration || isNaN(video.duration)) return;
+    if(!video.duration || isNaN(video.duration)) return;
     const percent = (video.currentTime / video.duration) * 100;
     if(progressFilled) progressFilled.style.width = percent + '%';
     let m = Math.floor(video.currentTime / 60);
     let s = Math.floor(video.currentTime % 60);
-    if(s < 10) s = '0' + s;
+    if(s < 10) s = '0'+s;
     if(curTime) curTime.textContent = `${m}:${s}`;
   });
 
   // Total duration
   video.addEventListener('loadedmetadata', ()=>{
-    if (!video.duration || isNaN(video.duration)) return;
+    if(!video.duration || isNaN(video.duration)) return;
     let m = Math.floor(video.duration / 60);
     let s = Math.floor(video.duration % 60);
-    if(s < 10) s = '0' + s;
+    if(s < 10) s = '0'+s;
     if(durTime) durTime.textContent = `${m}:${s}`;
   });
 
   // Sync mute icon
   video.addEventListener('volumechange', ()=>{
-    if(muteBtn) muteBtn.textContent = (video.muted || video.volume===0)?'🔇':'🔊';
+    if(muteBtn) muteBtn.textContent = (video.muted || video.volume===0) ? '🔇' : '🔊';
     if(volume && typeof video.volume==='number') volume.value = String(video.volume);
   });
 });
