@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if(arrowRight) arrowRight.addEventListener('click', next);
   if(arrowLeft) arrowLeft.addEventListener('click', prev);
   if(slides.length) show(0);
-  setInterval(next, 2000);
+  setInterval(next, 4000);
 
   // --- Theme toggle ---
   const body = document.body;
@@ -21,17 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Language toggle (упрощено) ---
+  // --- Language toggle ---
   const langToggle = document.getElementById('langToggle');
-  let currentLang = "en";
   if(langToggle){
     langToggle.addEventListener('click', ()=>{
-      currentLang = (currentLang === "en") ? "ru" : "en";
-      document.querySelectorAll("[data-i18n-lang],[data-i16n-lang],[data-i12n-lang],[data-i10n-lang]")
-        .forEach(el => {
-          const attr = el.getAttribute("data-i18n-lang") || el.getAttribute("data-i16n-lang") || el.getAttribute("data-i12n-lang") || el.getAttribute("data-i10n-lang");
-          el.style.display = (attr === currentLang) ? "" : "none";
-        });
+      const all = document.querySelectorAll('[data-i18n-lang],[data-i16n-lang],[data-i12n-lang],[data-i10n-lang]');
+      all.forEach(el => {
+        el.style.display = (el.style.display === 'none') ? '' : 'none';
+      });
     });
   }
 
@@ -54,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const curTime = document.getElementById('curTime');
   const durTime = document.getElementById('durTime');
   const controlsRow = document.querySelector('.controls-row');
-  const playerCard = document.querySelector('.player-card');
 
   video.controls = false;
 
@@ -91,31 +87,49 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Fullscreen button (теперь кастомный fullscreen на контейнере) ---
-  if (fsBtn && playerCard) {
+  // Fullscreen button — универсальный
+  if (fsBtn) {
     fsBtn.addEventListener('click', () => {
-      if(document.fullscreenElement){
-        document.exitFullscreen();
-      } else if(playerCard.requestFullscreen){
-        playerCard.requestFullscreen(); // ПК + Android + новые Safari
-      } else if(playerCard.webkitRequestFullscreen){
-        playerCard.webkitRequestFullscreen(); // старые Safari
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+      if (isIOS && video.webkitEnterFullscreen) {
+        // iPhone / iPad → только нативный fullscreen
+        video.webkitEnterFullscreen();
       } else {
-        alert("Fullscreen недоступен на этом устройстве");
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else if (video.requestFullscreen) {
+          video.requestFullscreen(); // ПК и Android
+        } else if (video.webkitRequestFullscreen) {
+          video.webkitRequestFullscreen(); // старый Safari
+        } else if (video.msRequestFullscreen) {
+          video.msRequestFullscreen(); // старый Edge
+        } else {
+          alert("Fullscreen не поддерживается на этом устройстве.");
+        }
       }
     });
   }
 
-  // Fullscreen change
+  // Fullscreen change events (ПК/Android)
   document.addEventListener('fullscreenchange', () => {
     if(document.fullscreenElement){
-      // при fullscreen можно скрыть системные контролы
-      video.controls = false;
-      if(controlsRow) controlsRow.style.display = 'flex';
+      video.controls = true;
+      if(controlsRow) controlsRow.style.display = 'none';
     } else {
       video.controls = false;
       if(controlsRow) controlsRow.style.display = 'flex';
     }
+  });
+
+  // iOS Safari fullscreen events
+  video.addEventListener('webkitbeginfullscreen', () => {
+    video.controls = true;
+    if(controlsRow) controlsRow.style.display = 'none';
+  });
+  video.addEventListener('webkitendfullscreen', () => {
+    video.controls = false;
+    if(controlsRow) controlsRow.style.display = 'flex';
   });
 
   // Progress bar click
