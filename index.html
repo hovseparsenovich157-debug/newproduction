@@ -4,23 +4,22 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Mesropyans — Forever</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body data-theme="dark">
-
   <div class="page-container">
-
-    <!-- Topbar -->
     <header class="topbar" id="topbar">
-      <div class="logo-text">Mesropyans Production</div>
-      <div class="controls">
-        <button id="homeBtn" class="icon-btn" title="Home">🏠</button>
-        <button id="themeBtn" class="icon-btn" title="Theme">🌙</button>
-        <button id="langToggle" class="icon-btn" title="Language">🌐</button>
-      </div>
-    </header>
+  <div class="logo-text">Mesropyans Production</div>
+  <div class="controls">
+    <button id="homeBtn" class="icon-btn" title="Home">🏠</button>
+    <button id="themeBtn" class="icon-btn" title="Theme">🌙</button>
+    <button id="langToggle" class="icon-btn" title="Language">🌐</button>
+  </div>
+</header>
 
-    <!-- Carousel -->
     <section class="carousel-wrap" aria-label="Gallery">
       <div class="carousel">
         <button class="arrow left" id="arrowLeft" aria-label="Previous">‹</button>
@@ -32,14 +31,13 @@
       </div>
     </section>
 
-    <!-- Video Player -->
     <main class="container">
       <section class="player-card small-player">
         <div class="video-wrap">
-          <video id="playerVideo" preload="metadata" poster="post4.jpg" playsinline webkit-playsinline>
+          <video id="playerVideo" preload="metadata" poster="post4.jpg" playsinline>
             <source src="video1.mp4" type="video/mp4">
-            Ваш браузер не поддерживает видео.
           </video>
+    
         </div>
         <div class="controls-row">
           <button id="playBtn" class="ctrl" aria-label="Play">▶</button>
@@ -54,9 +52,8 @@
         </div>
       </section>
 
-      <!-- Premiere Info -->
-      <h2 data-i18n-lang="en" class="premiere-title">Premiere of the year</h2>
-      <h2 data-i18n-lang="ru" style="display:none" class="premiere-title">Премьера года</h2>
+      <h2 data-i10n-lang="en" class="premiere-title">Premiere of the year</h2>
+      <h2 data-i10n-lang="ru" style="display:none" class="premiere-title">Премьера года</h2>
       <section class="posters">
         <div class="poster-grid">
           <div class="poster-card"><img src="photo_2025-09-24_17-14-42.jpg" alt="Poster A"></div>
@@ -64,28 +61,23 @@
         </div>
       </section>
 
-      <!-- Description -->
       <section class="meta">
-        <h2 data-i18n-lang="en">Description</h2>
-        <h2 data-i18n-lang="ru" style="display:none">Описание</h2>
+        <h2 data-i16n-lang="en">Description</h2>
+        <h2 data-i16n-lang="ru" style="display:none">Описание</h2>
         <p data-i18n-lang="en">
-          In 2008, during the war, a young man draws a girl — and she comes to life. She runs away from home and he chases her, finding her in a mysterious place. Later her ring is stolen and together they set out to find the thief. The film ends with hope and light.
+          In 2008, during the war, a young man draws a girl — and she comes to life. She runs away from home and he chases her, finding her in a mysterious place. Later her ring is stolen and together they set out to find the thief. In the finale Armageddon begins: they help search for missing people. The film ends with hope and light.
         </p>
         <p data-i18n-lang="ru" style="display:none">
-          В 2008 году, во время войны, молодой парень рисует девушку — и она оживает. Она убегает из дома; он преследует её и находит в странном месте. Позже у неё крадут кольцо, и они вместе отправляются на поиски преступника. Фильм заканчивается с надеждой и светом.
+          В 2008 году, во время войны, молодой парень рисует девушку — и она оживает. Она убегает из дома; он преследует её и находит в странном месте. Позже у неё крадут кольцо, и они вместе отправляются на поиски преступника. В финале начинается Армагеддон: они помогают находить пропавших людей. Фильм заканчивается с надеждой и светом.
         </p>
       </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
-      <p data-i18n-lang="ru" style="display:none">© Mesropyans Production — Все права защищены.</p>
-      <p data-i18n-lang="en">© Mesropyans Production — All rights reserved.</p>
+     <p data-i12n-lang="ru"style="display:none"> © Mesropyans Production — Все права защищены.</p>
+     <p data-i12n-lang="en">© Mesropyans Production — All rights reserved.</p>
     </footer>
-
   </div>
-
-  <!-- Подключение исправленного JS -->
   <script src="script.js"></script>
 </body>
 </html>
